@@ -1,6 +1,12 @@
 class emitter(object):
-    def __init__(self):
-        print "Hi"
+    def on(self, key, function):
+        self.map[key] = function
 
-    def __str__(self):
-        return "lavdya"
+    def execute(self, key,object):
+        function = self.map[key]
+        if function is not None:
+            function(object)
+
+    def __init__(self):
+        self.map = {}
+        print "super init got called"
