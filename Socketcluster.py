@@ -5,8 +5,9 @@ import Emitter
 
 
 class socket(Emitter.emitter):
-    def emit(self, event, object, ack):
+    def emitack(self, event, object, ack):
         self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
+        self.acks[self.cnt] = [event, ack]
 
     def emit(self, event, object):
         self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
@@ -15,25 +16,36 @@ class socket(Emitter.emitter):
         self.ws.send(
             "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
 
-    def subscribe(self, channel, ack):
+    def subscribeack(self, channel, ack):
         self.ws.send(
             "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
+        self.acks[self.cnt] = [channel, ack]
 
     def unsubscribe(self, channel):
         self.ws.send(
             "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
 
-    def unsubscribe(self, channel, ack):
+    def unsubscribeack(self, channel, ack):
         self.ws.send(
             "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
+        self.acks[self.cnt] = [channel, ack]
 
     def publish(self, channel, data):
         self.ws.send(
             "{\"event\":\"#publish\",\"data\":{\"channel\":\"" + channel + "\",\"data\":\"" + data + "\"},\"cid\":" + self.getandincrement() + "}")
 
-    def publish(self, channel, data, ack):
+    def publishack(self, channel, data, ack):
         self.ws.send(
             "{\"event\":\"#publish\",\"data\":{\"channel\":\"" + channel + "\",\"data\":\"" + data + "\"},\"cid\":" + self.getandincrement() + "}")
+        self.acks[self.cnt] = [channel, ack]
+
+    def Ack(self, cid):
+        ws = self.ws
+
+        def MessageAck(error, data):
+            ws.send("{\"error\":\"" + error + "\",\"data\":\"" + data + "\",\"rid\":" + str(cid) + "}")
+
+        return MessageAck
 
     class BlankDict(dict):
         def __missing__(self, key):
@@ -72,9 +84,19 @@ class socket(Emitter.emitter):
                     self.onSetAuthentication(self, dataobject["token"])
             elif result == 5:
                 print "Event got called"
-                self.execute(event, dataobject)
+                if self.haseventack(event):
+                    self.executeack(event, dataobject, self.Ack(cid))
+                else:
+                    self.execute(event, dataobject)
             else:
                 print "Ack receive got called"
+                if self.acks.has_key(rid):
+                    tuple = self.acks[rid]
+                    if tuple is not None:
+                        ack = tuple[1]
+                        ack(tuple[0], mainobject["error"], mainobject["data"])
+                    else:
+                        print "Ack function not found for rid"
 
     def on_error(self, ws, error):
         if self.onConnectError is not None:
@@ -104,6 +126,7 @@ class socket(Emitter.emitter):
         self.cnt = 0
         self.authToken = "null"
         self.url = url
+        self.acks = {}
         self.ws = self.onConnected = self.onDisconnected = self.onConnectError = self.onSetAuthentication = self.OnAuthentication = None
         Emitter.emitter.__init__(self)
 
@@ -124,7 +147,3 @@ class socket(Emitter.emitter):
     def setAuthenticationListener(self, onSetAuthentication, OnAuthentication):
         self.onSetAuthentication = onSetAuthentication
         self.OnAuthentication = OnAuthentication
-
-    class channel(object):
-        def __init__(self, channelname):
-            self.channelname = channelname
