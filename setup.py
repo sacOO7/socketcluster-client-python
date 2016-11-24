@@ -8,7 +8,7 @@ setup(
     author='Sachin Shinde',
     author_email='sachinshinde7676@gmail.com',
     url='https://github.com/sacOO7/socketcluster-client-python',  # use the URL to the github repo
-    download_url='https://github.com/sacOO7/socketcluster-client-python',  # I'll explain this in a second
+    download_url='https://github.com/sacOO7/socketcluster-client-python/tarball/v0.1',  # I'll explain this in a second
     keywords=['websocket', 'socketcluster', 'nodejs', 'client'],  # arbitrary keywords
     classifiers=[],
 )
