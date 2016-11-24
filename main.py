@@ -21,8 +21,8 @@ def onSetAuthentication(socket, token):
 def onAuthentication(socket, isauthenticated):
     print "Authenticated is " + str(isauthenticated)
     # socket.emit("chat", "Hello")
-    # socket.subscribeack('yell', ack)
-    # socket.publishack('yell', 'Hi dudies',ack)
+    socket.subscribeack('yell', ack)
+    socket.publishack('yell', 'Hi dudies',ack)
 
 
 def message(key, object):
@@ -43,5 +43,5 @@ if __name__ == "__main__":
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
     socket.onack('ping', messsageack)
-    # socket.on('yell', message)
+    socket.on('yell', message)
     socket.connect()

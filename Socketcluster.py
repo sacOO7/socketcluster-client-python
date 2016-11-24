@@ -8,37 +8,93 @@ import threading
 
 class socket(Emitter.emitter):
     def emitack(self, event, object, ack):
-        self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
+        emitobject = json.loads('{}')
+        emitobject["event"] = event
+        emitobject["data"] = object
+        emitobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(emitobject, sort_keys=True))
+        # self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [event, ack]
 
     def emit(self, event, object):
-        self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
+        emitobject = json.loads('{}')
+        emitobject["event"] = event
+        emitobject["data"] = object
+        emitobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(emitobject, sort_keys=True))
+        print "Emit data is "+json.dumps(emitobject, sort_keys=True)
+        # self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
 
     def subscribe(self, channel):
-        self.ws.send(
-            "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
+        subscribeobject = json.loads('{}')
+        subscribeobject["event"] = "#subscribe"
+        object = json.loads('{}')
+        object["channel"] = channel
+        subscribeobject["data"] = object
+        subscribeobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        # self.ws.send(
+        #     "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
 
     def subscribeack(self, channel, ack):
-        self.ws.send(
-            "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
+        subscribeobject = json.loads('{}')
+        subscribeobject["event"] = "#subscribe"
+        object = json.loads('{}')
+        object["channel"] = channel
+        subscribeobject["data"] = object
+        subscribeobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        # self.ws.send(
+        #     "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [channel, ack]
 
     def unsubscribe(self, channel):
-        self.ws.send(
-            "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
+        subscribeobject = json.loads('{}')
+        subscribeobject["event"] = "#unsubscribe"
+        object = json.loads('{}')
+        object["channel"] = channel
+        subscribeobject["data"] = object
+        subscribeobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        # self.ws.send(
+        #     "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
 
     def unsubscribeack(self, channel, ack):
-        self.ws.send(
-            "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
+        subscribeobject = json.loads('{}')
+        subscribeobject["event"] = "#unsubscribe"
+        object = json.loads('{}')
+        object["channel"] = channel
+        subscribeobject["data"] = object
+        subscribeobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        # self.ws.send(
+        #     "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [channel, ack]
 
     def publish(self, channel, data):
-        self.ws.send(
-            "{\"event\":\"#publish\",\"data\":{\"channel\":\"" + channel + "\",\"data\":\"" + data + "\"},\"cid\":" + self.getandincrement() + "}")
+        publishobject = json.loads('{}')
+        publishobject["event"] = "#publish"
+        object = json.loads('{}')
+        object["channel"] = channel
+        object["data"] = data
+        publishobject["data"] = object
+        publishobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(publishobject, sort_keys=True))
+        # self.ws.send(
+        #     "{\"event\":\"#publish\",\"data\":{\"channel\":\"" + channel + "\",\"data\":\"" + data + "\"},\"cid\":" + self.getandincrement() + "}")
 
     def publishack(self, channel, data, ack):
-        self.ws.send(
-            "{\"event\":\"#publish\",\"data\":{\"channel\":\"" + channel + "\",\"data\":\"" + data + "\"},\"cid\":" + self.getandincrement() + "}")
+
+        publishobject = json.loads('{}')
+        publishobject["event"] = "#publish"
+        object = json.loads('{}')
+        object["channel"] = channel
+        object["data"] = data
+        publishobject["data"] = object
+        publishobject["cid"] = self.getandincrement()
+        self.ws.send(json.dumps(publishobject, sort_keys=True))
+        # self.ws.send(
+        #     "{\"event\":\"#publish\",\"data\":{\"channel\":\"" + channel + "\",\"data\":\"" + data + "\"},\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [channel, ack]
 
     def Ack(self, cid):
@@ -78,7 +134,7 @@ class socket(Emitter.emitter):
                 self.execute(dataobject["channel"], dataobject["data"])
                 print "publish got called"
             elif result == 3:
-                self.authToken="null"
+                self.authToken = None
                 print "remove token got called"
             elif result == 4:
                 print "set token got called"
@@ -113,7 +169,7 @@ class socket(Emitter.emitter):
 
     def getandincrement(self):
         self.cnt += 1
-        return str(self.cnt)
+        return self.cnt
 
     def resetvalue(self):
         self.cnt = 0
@@ -123,17 +179,27 @@ class socket(Emitter.emitter):
         self.resetvalue()
         if self.onConnected is not None:
             self.onConnected(self)
-        data = "{\"event\": \"#handshake\",\"data\": {\"authToken\":" + self.authToken + "},\"cid\": " + self.getandincrement() + "}"
-        print "data for authentication is"+data
-        self.ws.send(data)
+
+        handshakeobject = json.loads('{}')
+        handshakeobject["event"] = "#handshake"
+        object = json.loads('{}')
+        object["authToken"] = self.authToken
+        handshakeobject["data"] = object
+        handshakeobject["cid"] = self.getandincrement()
+        # print "data for authentication is" + json.dumps(handshakeobject, sort_keys=True)
+        self.ws.send(json.dumps(handshakeobject, sort_keys=True))
+
+        # data = "{\"event\": \"#handshake\",\"data\": {\"authToken\":" + self.authToken + "},\"cid\": " + self.getandincrement() + "}"
+        # print "data for authentication is" + data
+        # self.ws.send(data)
 
     def setAuthtoken(self, token):
-        self.authToken = "\"" + str(token) + "\""
+        self.authToken = str(token)
         # print "Token is"+self.authToken
 
     def __init__(self, url):
         self.cnt = 0
-        self.authToken = "null"
+        self.authToken = None
         self.url = url
         self.acks = {}
         self.ws = self.onConnected = self.onDisconnected = self.onConnectError = self.onSetAuthentication = self.OnAuthentication = None
