@@ -2,6 +2,8 @@ import websocket
 import json
 import Parser
 import Emitter
+import time
+import threading
 
 
 class socket(Emitter.emitter):
@@ -76,7 +78,7 @@ class socket(Emitter.emitter):
                 self.execute(dataobject["channel"], dataobject["data"])
                 print "publish got called"
             elif result == 3:
-                self.setAuthtoken("null")
+                self.authToken="null"
                 print "remove token got called"
             elif result == 4:
                 print "set token got called"
@@ -101,26 +103,33 @@ class socket(Emitter.emitter):
     def on_error(self, ws, error):
         if self.onConnectError is not None:
             self.onConnectError(self, error)
-        print error
+            # self.reconnect()
 
     def on_close(self, ws):
         if self.onDisconnected is not None:
             self.onDisconnected(self)
-        print "### closed ###"
+        self.reconnect()
+        # print "### closed ###"
 
     def getandincrement(self):
         self.cnt += 1
         return str(self.cnt)
 
+    def resetvalue(self):
+        self.cnt = 0
+
     def on_open(self, ws):
         # print "on open got called"
+        self.resetvalue()
         if self.onConnected is not None:
             self.onConnected(self)
-        ws.send(
-            "{\"event\": \"#handshake\",\"data\": {\"authToken\":" + self.authToken + "},\"cid\": " + self.getandincrement() + "}")
+        data = "{\"event\": \"#handshake\",\"data\": {\"authToken\":" + self.authToken + "},\"cid\": " + self.getandincrement() + "}"
+        print "data for authentication is"+data
+        self.ws.send(data)
 
     def setAuthtoken(self, token):
-        self.authToken = token
+        self.authToken = "\"" + str(token) + "\""
+        # print "Token is"+self.authToken
 
     def __init__(self, url):
         self.cnt = 0
@@ -131,7 +140,7 @@ class socket(Emitter.emitter):
         Emitter.emitter.__init__(self)
 
     def connect(self):
-        websocket.enableTrace(True)
+        # websocket.enableTrace(True)
         self.ws = websocket.WebSocketApp(self.url,
                                          on_message=self.on_message,
                                          on_error=self.on_error,
@@ -143,6 +152,12 @@ class socket(Emitter.emitter):
         self.onConnected = onConnected
         self.onDisconnected = onDisconnected
         self.onConnectError = onConnectError
+
+    def reconnect(self):
+        time.sleep(3)
+        self.connect()
+        # self.ws.run_forever()
+        # threading.Timer(3, self.connect()).start()
 
     def setAuthenticationListener(self, onSetAuthentication, OnAuthentication):
         self.onSetAuthentication = onSetAuthentication

@@ -15,12 +15,12 @@ def onConnectError(socket, error):
 
 def onSetAuthentication(socket, token):
     print "Token received " + token
-    # socket.setAuthtoken(token)
+    socket.setAuthtoken(token)
 
 
 def onAuthentication(socket, isauthenticated):
     print "Authenticated is " + str(isauthenticated)
-    socket.emit("chat", "Hello")
+    # socket.emit("chat", "Hello")
     # socket.subscribeack('yell', ack)
     # socket.publishack('yell', 'Hi dudies',ack)
 
