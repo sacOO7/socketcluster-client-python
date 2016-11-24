@@ -1,4 +1,4 @@
-import Socketcluster
+from socketclusterclient import Socketcluster
 
 
 def onconnect(socket):

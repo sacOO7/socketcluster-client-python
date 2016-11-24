@@ -1,9 +1,10 @@
-import websocket
 import json
-import Parser
-import Emitter
 import time
-import threading
+
+import websocket
+
+import Emitter
+import Parser
 
 
 class socket(Emitter.emitter):
