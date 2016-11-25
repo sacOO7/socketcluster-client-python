@@ -20,9 +20,14 @@ def onSetAuthentication(socket, token):
 
 def onAuthentication(socket, isauthenticated):
     print "Authenticated is " + str(isauthenticated)
-    # socket.emit("chat", "Hello")
-    socket.subscribeack('yell', suback)
-    socket.publishack('yell', 'Hi dudies', puback)
+
+    # socket.emit("chat", "Hi")
+
+    # Receiver code without ack
+    socket.on("ping", message)
+
+    # Receiver code with ack
+    socket.onack("ping", messsageack)
 
 
 def message(key, object):
@@ -34,24 +39,8 @@ def messsageack(key, object, ackmessage):
     ackmessage("this is error", "this is data")
 
 
-def ack(key, error, object):
-    print "Got ack data " + object + " and error " + error + " and key is " + key
-
-
-def puback(channel, error, object):
-    if error is None:
-        print "Publish sent successfully to channel " + channel
-
-
-def suback(channel, error, object):
-    if error is None:
-        print "Subscribed successfully to channel " + channel
-
-
 if __name__ == "__main__":
     socket = Socketcluster.socket("ws://localhost:8000/socketcluster/")
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
-    socket.onack('ping', messsageack)
-    socket.on('yell', message)
     socket.connect()
