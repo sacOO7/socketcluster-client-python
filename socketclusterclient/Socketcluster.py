@@ -54,9 +54,7 @@ class socket(Emitter.emitter):
     def unsubscribe(self, channel):
         subscribeobject = json.loads('{}')
         subscribeobject["event"] = "#unsubscribe"
-        object = json.loads('{}')
-        object["channel"] = channel
-        subscribeobject["data"] = object
+        subscribeobject["data"] = channel
         subscribeobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(subscribeobject, sort_keys=True))
         self.channels.remove(channel)
@@ -66,9 +64,7 @@ class socket(Emitter.emitter):
     def unsubscribeack(self, channel, ack):
         subscribeobject = json.loads('{}')
         subscribeobject["event"] = "#unsubscribe"
-        object = json.loads('{}')
-        object["channel"] = channel
-        subscribeobject["data"] = object
+        subscribeobject["data"] = channel
         subscribeobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(subscribeobject, sort_keys=True))
         self.channels.remove(channel)

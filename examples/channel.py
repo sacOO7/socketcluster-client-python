@@ -27,7 +27,9 @@ def onAuthentication(socket, isauthenticated):
 
     socket.publishack('yell', 'Hi dudies', puback)
 
-    socket.onchannel('yell', message)
+    socket.onchannel('yell', channelmessage)
+
+    socket.unsubscribeack('yell', unsuback)
 
 
 def suback(channel, error, object):
@@ -40,8 +42,13 @@ def puback(channel, error, object):
         print "Publish sent successfully to channel " + channel
 
 
-def message(key, object):
+def channelmessage(key, object):
     print "Got data " + object + " from key " + key
+
+
+def unsuback(channel, error, object):
+    if error is '':
+        print "Unsubscribed to channel " + channel
 
 
 if __name__ == "__main__":
