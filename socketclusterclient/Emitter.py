@@ -30,4 +30,4 @@ class emitter(object):
         self.map = {}
         self.mapack = {}
 
-        print "super init got called"
+        # print "super init got called"

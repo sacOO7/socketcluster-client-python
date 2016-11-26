@@ -1,51 +1,54 @@
 from socketclusterclient import Socketcluster
+import logging
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 
 def onconnect(socket):
-    print "on connect got called"
+    logging.info("on connect got called")
 
 
 def ondisconnect(socket):
-    print "on disconnect got called"
+    logging.info("on disconnect got called")
 
 
 def onConnectError(socket, error):
-    print "On connect error got called"
+    logging.info("On connect error got called")
 
 
 def onSetAuthentication(socket, token):
-    print "Token received " + token
+    logging.info("Token received " + token)
     socket.setAuthtoken(token)
 
 
 def onAuthentication(socket, isauthenticated):
-    print "Authenticated is " + str(isauthenticated)
+    logging.info("Authenticated is " + str(isauthenticated))
     # socket.emit("chat", "Hello")
     socket.subscribeack('yell', suback)
     socket.publishack('yell', 'Hi dudies', puback)
 
 
 def message(key, object):
-    print "Got data " + object + " from key " + key
+    logging.info("Got data " + object + " from key " + key)
 
 
 def messsageack(key, object, ackmessage):
-    print "Got data " + object + " from key " + key
+    logging.info("Got data " + object + " from key " + key)
     ackmessage("this is error", "this is data")
 
 
 def ack(key, error, object):
-    print "Got ack data " + object + " and error " + error + " and key is " + key
+    logging.info("Got ack data " + object + " and error " + error + " and key is " + key)
 
 
 def puback(channel, error, object):
     if error is '':
-        print "Publish sent successfully to channel " + channel
+        logging.info("Publish sent successfully to channel " + channel)
 
 
 def suback(channel, error, object):
     if error is '':
-        print "Subscribed successfully to channel " + channel
+        logging.info("Subscribed successfully to channel " + channel)
 
 
 if __name__ == "__main__":

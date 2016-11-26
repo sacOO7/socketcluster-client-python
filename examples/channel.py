@@ -1,4 +1,3 @@
-
 from socketclusterclient import Socketcluster
 
 
@@ -55,3 +54,4 @@ if __name__ == "__main__":
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
     socket.connect()
+

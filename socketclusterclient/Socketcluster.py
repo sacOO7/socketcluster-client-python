@@ -1,10 +1,10 @@
 import json
 from threading import Timer
 import websocket
-
+import logging
 import Emitter
 import Parser
-
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 class socket(Emitter.emitter):
     def emitack(self, event, object, ack):
@@ -22,7 +22,7 @@ class socket(Emitter.emitter):
         emitobject["data"] = object
         emitobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(emitobject, sort_keys=True))
-        print "Emit data is " + json.dumps(emitobject, sort_keys=True)
+        logging.info("Emit data is " + json.dumps(emitobject, sort_keys=True))
         # self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
 
     def subscribe(self, channel):
@@ -123,14 +123,14 @@ class socket(Emitter.emitter):
             return ''
 
     def SuscribeChannels(self):
-        print "subscribe got called"
+        logging.info( "subscribe got called")
 
     def on_message(self, ws, message):
         if message == "#1":
-            print ("got ping sending pong")
+            # print ("got ping sending pong")
             self.ws.send("#2")
         else:
-            print message
+            logging.info( message)
             mainobject = json.loads(message, object_hook=self.BlankDict)
             dataobject = mainobject["data"]
             rid = mainobject["rid"]
@@ -146,29 +146,29 @@ class socket(Emitter.emitter):
                 self.subscribechannels()
             elif result == 2:
                 self.execute(dataobject["channel"], dataobject["data"])
-                print "publish got called"
+                logging.info( "publish got called")
             elif result == 3:
                 self.authToken = None
-                print "remove token got called"
+                logging.info( "remove token got called")
             elif result == 4:
-                print "set token got called"
+                logging.info( "set token got called")
                 if self.onSetAuthentication is not None:
                     self.onSetAuthentication(self, dataobject["token"])
             elif result == 5:
-                print "Event got called"
+                logging.info("Event got called")
                 if self.haseventack(event):
                     self.executeack(event, dataobject, self.Ack(cid))
                 else:
                     self.execute(event, dataobject)
             else:
-                print "Ack receive got called"
+                logging.info("Ack receive got called")
                 if self.acks.has_key(rid):
                     tuple = self.acks[rid]
                     if tuple is not None:
                         ack = tuple[1]
                         ack(tuple[0], mainobject["error"], mainobject["data"])
                     else:
-                        print "Ack function not found for rid"
+                        logging.info("Ack function not found for rid")
 
     def on_error(self, ws, error):
         if self.onConnectError is not None:
