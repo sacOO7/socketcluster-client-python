@@ -23,7 +23,7 @@ class socket(Emitter.emitter):
         emitobject["data"] = object
         emitobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(emitobject, sort_keys=True))
-        print "Emit data is "+json.dumps(emitobject, sort_keys=True)
+        print "Emit data is " + json.dumps(emitobject, sort_keys=True)
         # self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
 
     def subscribe(self, channel):
@@ -34,6 +34,7 @@ class socket(Emitter.emitter):
         subscribeobject["data"] = object
         subscribeobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        self.channels.append(channel)
         # self.ws.send(
         #     "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
 
@@ -45,6 +46,7 @@ class socket(Emitter.emitter):
         subscribeobject["data"] = object
         subscribeobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        self.channels.append(channel)
         # self.ws.send(
         #     "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [channel, ack]
@@ -57,6 +59,7 @@ class socket(Emitter.emitter):
         subscribeobject["data"] = object
         subscribeobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        self.channels.remove(channel)
         # self.ws.send(
         #     "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
 
@@ -68,6 +71,7 @@ class socket(Emitter.emitter):
         subscribeobject["data"] = object
         subscribeobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(subscribeobject, sort_keys=True))
+        self.channels.remove(channel)
         # self.ws.send(
         #     "{\"event\":\"#unsubscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [channel, ack]
@@ -97,6 +101,9 @@ class socket(Emitter.emitter):
         # self.ws.send(
         #     "{\"event\":\"#publish\",\"data\":{\"channel\":\"" + channel + "\",\"data\":\"" + data + "\"},\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [channel, ack]
+
+    def getsubscribedchannels(self):
+        return self.channels
 
     def Ack(self, cid):
         ws = self.ws
@@ -203,6 +210,7 @@ class socket(Emitter.emitter):
         self.authToken = None
         self.url = url
         self.acks = {}
+        self.channels = []
         self.ws = self.onConnected = self.onDisconnected = self.onConnectError = self.onSetAuthentication = self.OnAuthentication = None
         Emitter.emitter.__init__(self)
 

@@ -39,12 +39,12 @@ def ack(key, error, object):
 
 
 def puback(channel, error, object):
-    if error is None:
+    if error is '':
         print "Publish sent successfully to channel " + channel
 
 
 def suback(channel, error, object):
-    if error is None:
+    if error is '':
         print "Subscribed successfully to channel " + channel
 
 

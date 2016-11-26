@@ -2,6 +2,9 @@ class emitter(object):
     def on(self, key, function):
         self.map[key] = function
 
+    def onchannel(self, key, function):
+        self.map[key] = function
+
     def onack(self, key, function):
         self.mapack[key] = function
 
