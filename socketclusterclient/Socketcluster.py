@@ -1,6 +1,5 @@
 import json
-import time
-
+from threading import Timer
 import websocket
 
 import Emitter
@@ -37,6 +36,11 @@ class socket(Emitter.emitter):
         self.channels.append(channel)
         # self.ws.send(
         #     "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + self.getandincrement() + "}")
+
+    def sub(self, channel):
+        self.ws.send(
+            "{\"event\":\"#subscribe\",\"data\":{\"channel\":\"" + channel + "\"},\"cid\":" + str(
+                self.getandincrement()) + "}")
 
     def subscribeack(self, channel, ack):
         subscribeobject = json.loads('{}')
@@ -101,6 +105,11 @@ class socket(Emitter.emitter):
     def getsubscribedchannels(self):
         return self.channels
 
+    def subscribechannels(self):
+        # subscribing to all channels
+        for x in self.channels:
+            self.sub(x)
+
     def Ack(self, cid):
         ws = self.ws
 
@@ -134,6 +143,7 @@ class socket(Emitter.emitter):
                 # print "authentication got called"
                 if self.OnAuthentication is not None:
                     self.OnAuthentication(self, dataobject["isAuthenticated"])
+                self.subscribechannels()
             elif result == 2:
                 self.execute(dataobject["channel"], dataobject["data"])
                 print "publish got called"
@@ -168,8 +178,9 @@ class socket(Emitter.emitter):
     def on_close(self, ws):
         if self.onDisconnected is not None:
             self.onDisconnected(self)
-        self.reconnect()
-        # print "### closed ###"
+        if self.enablereconnection:
+            self.reconnect()
+            # print "### closed ###"
 
     def getandincrement(self):
         self.cnt += 1
@@ -181,6 +192,7 @@ class socket(Emitter.emitter):
     def on_open(self, ws):
         # print "on open got called"
         self.resetvalue()
+
         if self.onConnected is not None:
             self.onConnected(self)
 
@@ -192,6 +204,7 @@ class socket(Emitter.emitter):
         handshakeobject["cid"] = self.getandincrement()
         # print "data for authentication is" + json.dumps(handshakeobject, sort_keys=True)
         self.ws.send(json.dumps(handshakeobject, sort_keys=True))
+
 
         # data = "{\"event\": \"#handshake\",\"data\": {\"authToken\":" + self.authToken + "},\"cid\": " + self.getandincrement() + "}"
         # print "data for authentication is" + data
@@ -207,6 +220,8 @@ class socket(Emitter.emitter):
         self.url = url
         self.acks = {}
         self.channels = []
+        self.enablereconnection = True
+        self.delay = 3
         self.ws = self.onConnected = self.onDisconnected = self.onConnectError = self.onSetAuthentication = self.OnAuthentication = None
         Emitter.emitter.__init__(self)
 
@@ -225,11 +240,19 @@ class socket(Emitter.emitter):
         self.onConnectError = onConnectError
 
     def reconnect(self):
-        time.sleep(3)
-        self.connect()
-        # self.ws.run_forever()
-        # threading.Timer(3, self.connect()).start()
+        # print "Hello"
+        Timer(self.delay, self.connect).start()
+
+    def setdelay(self, delay):
+        self.delay = delay
+
+    def setreconnection(self, enable):
+        self.enablereconnection = enable
 
     def setAuthenticationListener(self, onSetAuthentication, OnAuthentication):
         self.onSetAuthentication = onSetAuthentication
         self.OnAuthentication = OnAuthentication
+
+    def disconnect(self):
+        self.enablereconnection = False
+        self.ws.close()

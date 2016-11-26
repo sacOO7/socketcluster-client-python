@@ -1,4 +1,3 @@
-
 from socketclusterclient import Socketcluster
 
 
@@ -21,34 +20,7 @@ def onSetAuthentication(socket, token):
 
 def onAuthentication(socket, isauthenticated):
     print "Authenticated is " + str(isauthenticated)
-
-    socket.subscribeack('yell', suback)
-
-    socket.publishack('yell', 'Hi dudies', puback)
-
-    socket.onchannel('yell', channelmessage)
-
-    socket.unsubscribeack('yell', unsuback)
-
-
-def suback(channel, error, object):
-    if error is '':
-        print "Subscribed successfully to channel " + channel
-
-
-def puback(channel, error, object):
-    if error is '':
-        print "Publish sent successfully to channel " + channel
-
-
-def channelmessage(key, object):
-    print "Got data " + object + " from key " + key
-
-
-def unsuback(channel, error, object):
-    if error is '':
-        print "Unsubscribed to channel " + channel
-
+    socket.disconnect()
 
 if __name__ == "__main__":
     socket = Socketcluster.socket("ws://localhost:8000/socketcluster/")
