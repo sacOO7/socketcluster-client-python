@@ -21,6 +21,7 @@ def onSetAuthentication(socket, token):
 def onAuthentication(socket, isauthenticated):
     print "Authenticated is " + str(isauthenticated)
 
+
     socket.subscribeack('yell', suback)
 
     socket.publishack('yell', 'Hi dudies', puback)

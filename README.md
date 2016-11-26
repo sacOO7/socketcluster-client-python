@@ -145,6 +145,11 @@ Implementing Pub-Sub via channels
 - For creating and subscribing to channels:
 
 ```python
+    
+    # without acknowledgement
+    socket.subscribe('yell')
+    
+    #with acknowledgement
     socket.subscribeack('yell', suback)
     
     def suback(channel, error, object):
@@ -169,6 +174,10 @@ Implementing Pub-Sub via channels
 
 ```python
 
+       # without acknowledgement
+       socket.publish('yell', 'Hi dudies')
+       
+       #with acknowledgement
        socket.publishack('yell', 'Hi dudies', puback)
        
        def puback(channel, error, object):
@@ -181,7 +190,7 @@ Implementing Pub-Sub via channels
 - For listening to channel event :
 
 ```python
-    
+        
         socket.onchannel('yell', channelmessage)
     
         def channelmessage(key, object):
@@ -192,7 +201,10 @@ Implementing Pub-Sub via channels
 #### Un-subscribing to channel
 
 ```python
-
+         # without acknowledgement
+         socket.unsubscribe('yell')
+         
+         # with acknowledgement
          socket.unsubscribeack('yell', unsuback) 
          
          def unsuback(channel, error, object):

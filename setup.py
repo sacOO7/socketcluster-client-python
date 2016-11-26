@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name='socketclusterclient',
     packages=['socketclusterclient'],  # this must be the same as the name above
-    version='0.1',
+    version='0.2',
     description='Client library for socketcluster framework in nodejs',
     author='Sachin Shinde',
     author_email='sachinshinde7676@gmail.com',
