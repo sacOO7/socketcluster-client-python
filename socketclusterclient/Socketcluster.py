@@ -20,7 +20,7 @@ class socket(Emitter.emitter):
         emitobject = json.loads('{}')
         emitobject["event"] = event
         emitobject["data"] = object
-        emitobject["cid"] = self.getandincrement()
+        # emitobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(emitobject, sort_keys=True))
         logging.info("Emit data is " + json.dumps(emitobject, sort_keys=True))
         # self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")

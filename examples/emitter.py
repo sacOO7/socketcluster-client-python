@@ -25,7 +25,7 @@ def onAuthentication(socket, isauthenticated):
     socket.emit("chat", "Hi")
 
     # Emitter code with ack
-    socket.emitack("chat", "Hi", ack)
+    # socket.emitack("chat", "Hi", ack)
 
 
 def ack(key, error, object):
