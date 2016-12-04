@@ -10,7 +10,7 @@ class emitter(object):
 
     def execute(self, key, object):
 
-        if self.map.has_key(key):
+        if key in self.map:
             function = self.map[key]
             if function is not None:
                 function(key, object)
@@ -21,7 +21,7 @@ class emitter(object):
         # return False
 
     def executeack(self, key, object, ack):
-        if self.mapack.has_key(key):
+        if key in self.mapack:
             function = self.mapack[key]
             if function is not None:
                 function(key, object,ack)
