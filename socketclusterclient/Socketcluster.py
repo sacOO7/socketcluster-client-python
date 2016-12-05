@@ -229,14 +229,14 @@ class socket(Emitter.emitter):
         self.ws = self.onConnected = self.onDisconnected = self.onConnectError = self.onSetAuthentication = self.OnAuthentication = None
         Emitter.emitter.__init__(self)
 
-    def connect(self):
+    def connect(self, sslopt=None, http_proxy_host=None, http_proxy_port=None):
         # websocket.enableTrace(True)
         self.ws = websocket.WebSocketApp(self.url,
                                          on_message=self.on_message,
                                          on_error=self.on_error,
                                          on_close=self.on_close)
         self.ws.on_open = self.on_open
-        self.ws.run_forever()
+        self.ws.run_forever(sslopt=sslopt, http_proxy_host=http_proxy_host, http_proxy_port=http_proxy_port)
 
     def setBasicListener(self, onConnected, onDisconnected, onConnectError):
         self.onConnected = onConnected

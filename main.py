@@ -1,3 +1,5 @@
+import ssl
+
 from socketclusterclient import Socketcluster
 import logging
 
@@ -58,3 +60,5 @@ if __name__ == "__main__":
     socket.onack('ping', messsageack)
     socket.on('yell', message)
     socket.connect()
+    # socket.connect(sslopt={"cert_reqs": ssl.CERT_NONE})
+    socket.setreconnection(False)
