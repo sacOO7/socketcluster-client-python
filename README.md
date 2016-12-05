@@ -24,7 +24,7 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
     socket = Socketcluster.socket("ws://localhost:8000/socketcluster/") 
     
 ```
-Note : Default url to socketcluster end-point is always *ws://somedomainname.com/socketcluster/*.
+**Important Note** : Default url to socketcluster end-point is always *ws://somedomainname.com/socketcluster/*.
 
 #### Registering basic listeners
  
