@@ -212,3 +212,18 @@ Implementing Pub-Sub via channels
                    print "Unsubscribed to channel " + channel 
 ```
       
+#### Disable SSL Certificate Verification
+
+```python
+        socket = Socketcluster.socket("wss://localhost:8000/socketcluster/")
+        socket.connect(sslopt={"cert_reqs": ssl.CERT_NONE})
+```
+
+#### HTTP proxy
+
+Support websocket access via http proxy. The proxy server must allow "CONNECT" method to websocket port. Default squid setting is "ALLOWED TO CONNECT ONLY HTTPS PORT".
+
+```python
+        socket = Socketcluster.socket("wss://localhost:8000/socketcluster/")
+        socket.connect(http_proxy_host="proxy_host_name", http_proxy_port=3128)
+```
