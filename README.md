@@ -107,8 +107,8 @@ Emitting and listening to events
 
     socket.emitack("chat", "Hi", ack)  
         
-    def ack(key, error, object):
-        print "Got ack data " + object + " and error " + error + " and key is " + key
+    def ack(eventname, error, object):
+        print "Got ack data " + object + " and error " + error + " and eventname is " + eventname
 ```
 
 #### Event Listener
@@ -121,8 +121,8 @@ The object received can be String, Boolean, Long or JSONObject.
      # Receiver code without sending acknowledgement back
      socket.on("ping", message)
      
-     def message(key, object):
-         print "Got data " + object + " from key " + key
+     def message(eventname, object):
+         print "Got data " + object + " from eventname " + eventname
 ```
 
 - To send acknowledgement back to server
@@ -131,8 +131,8 @@ The object received can be String, Boolean, Long or JSONObject.
     # Receiver code with ack
     socket.onack("ping", messsageack)
     
-    def messsageack(key, object, ackmessage):
-        print "Got data " + object + " from key " + key
+    def messsageack(eventname, object, ackmessage):
+        print "Got data " + object + " from eventname " + eventname
         ackmessage("this is error", "this is data")
         
 ```
