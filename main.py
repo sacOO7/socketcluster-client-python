@@ -25,6 +25,7 @@ def onSetAuthentication(socket, token):
 
 def onAuthentication(socket, isauthenticated):
     logging.info("Authenticated is " + str(isauthenticated))
+    print "id is "+socket.id
     # socket.emit("chat", "Hello")
     socket.subscribeack('yell', suback)
     socket.publishack('yell', 'Hi dudies', puback)
@@ -58,7 +59,7 @@ if __name__ == "__main__":
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
     socket.onack('ping', messsageack)
-    socket.on('yell', message)
+    # socket.on('yell', message)
+    # socket.setreconnection(True)
     socket.connect()
     # socket.connect(sslopt={"cert_reqs": ssl.CERT_NONE})
-    socket.setreconnection(False)

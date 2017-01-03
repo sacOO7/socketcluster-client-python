@@ -118,7 +118,12 @@ class socket(Emitter.emitter):
         ws = self.ws
 
         def MessageAck(error, data):
-            ws.send("{\"error\":\"" + error + "\",\"data\":\"" + data + "\",\"rid\":" + str(cid) + "}")
+            ackobject = json.loads('{}')
+            ackobject["error"] = error
+            ackobject["data"] = data
+            ackobject["rid"] = cid
+            ws.send(json.dumps(ackobject, sort_keys=True))
+            # ws.send("{\"error\":\"" + error + "\",\"data\":\"" + data + "\",\"rid\":" + str(cid) + "}")
 
         return MessageAck
 
@@ -146,6 +151,7 @@ class socket(Emitter.emitter):
             if result == 1:
                 # print "authentication got called"
                 if self.OnAuthentication is not None:
+                    self.id = dataobject["id"]
                     self.OnAuthentication(self, dataobject["isAuthenticated"])
                 self.subscribechannels()
             elif result == 2:
@@ -219,6 +225,7 @@ class socket(Emitter.emitter):
         # print "Token is"+self.authToken
 
     def __init__(self, url):
+        self.id = ""
         self.cnt = 0
         self.authToken = None
         self.url = url
@@ -246,6 +253,7 @@ class socket(Emitter.emitter):
     def reconnect(self):
         # print "Hello"
         Timer(self.delay, self.connect).start()
+        print "delay"
 
     def setdelay(self, delay):
         self.delay = delay

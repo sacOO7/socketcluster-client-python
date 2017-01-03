@@ -17,7 +17,8 @@ class emitter(object):
 
     def haseventack(self, key):
         # print "return value is "+self.mapack[key]
-        return self.mapack.has_key(key)
+        # return self.mapack.has_key(key)
+        return key in self.mapack
         # return False
 
     def executeack(self, key, object, ack):
