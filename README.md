@@ -92,7 +92,7 @@ Emitting and listening to events
 --------------------------------
 #### Event emitter
 
-- eventname is name of event and message can be String ,boolean ,int or JSON-object
+- eventname is name of event and message can be String, boolean, int or JSON-object
 
 ```python
 
@@ -115,7 +115,7 @@ Emitting and listening to events
 
 - For listening to events :
 
-The object received can be String , Boolean , Long or JSONObject.
+The object received can be String, Boolean, Long or JSONObject.
 
 ```python
      # Receiver code without sending acknowledgement back
