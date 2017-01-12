@@ -9,6 +9,7 @@ This client provides following functionality
 - Automatic reconnection
 - Pub/sub
 - Authentication (JWT)
+- Support for python2.x.x / python3.x.x
 
 To install use
 ```python
