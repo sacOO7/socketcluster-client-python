@@ -1,10 +1,12 @@
 # socketcluster-client-python
-Refer examples for more details
+Refer examples for more details :
     
 Overview
 --------
 This client provides following functionality
 
+- Easy to setup and use
+- Can be used for extensive unit-testing of all server side functions
 - Support for emitting and listening to remote events
 - Automatic reconnection
 - Pub/sub
