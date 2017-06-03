@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import json
 from threading import Timer
 import websocket
@@ -253,7 +255,7 @@ class socket(Emitter.emitter):
     def reconnect(self):
         # print "Hello"
         Timer(self.delay, self.connect).start()
-        print "delay"
+        print("delay")
 
     def setdelay(self, delay):
         self.delay = delay
