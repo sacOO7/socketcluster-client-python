@@ -253,7 +253,6 @@ class socket(Emitter.emitter):
     def reconnect(self):
         # print "Hello"
         Timer(self.delay, self.connect).start()
-        print "delay"
 
     def setdelay(self, delay):
         self.delay = delay
