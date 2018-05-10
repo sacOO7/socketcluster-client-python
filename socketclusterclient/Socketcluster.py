@@ -150,10 +150,10 @@ class socket(Emitter.emitter):
             # print "result is" + str(result)
             if result == 1:
                 # print "authentication got called"
+                self.subscribechannels()
                 if self.OnAuthentication is not None:
                     self.id = dataobject["id"]
                     self.OnAuthentication(self, dataobject["isAuthenticated"])
-                self.subscribechannels()
             elif result == 2:
                 self.execute(dataobject["channel"], dataobject["data"])
                 logging.info("publish got called")
