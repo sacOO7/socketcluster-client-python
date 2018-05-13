@@ -7,6 +7,8 @@ import importlib
 Emitter = importlib.import_module(".Emitter", package="socketclusterclient")
 Parser = importlib.import_module(".Parser", package="socketclusterclient")
 
+#logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+
 class socket(Emitter.emitter):
     def emitack(self, event, object, ack):
         emitobject = json.loads('{}')
@@ -14,6 +16,7 @@ class socket(Emitter.emitter):
         emitobject["data"] = object
         emitobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(emitobject, sort_keys=True))
+        # logging.info("Emit data is " + json.dumps(emitobject, sort_keys=True))
         # self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
         self.acks[self.cnt] = [event, ack]
 
@@ -23,8 +26,6 @@ class socket(Emitter.emitter):
         emitobject["data"] = object
         # emitobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(emitobject, sort_keys=True))
-        logging.info("Emit data is " + json.dumps(emitobject, sort_keys=True))
-        # self.ws.send("{\"event\":\"" + event + "\",\"data\":\"" + object + "\",\"cid\":" + self.getandincrement() + "}")
 
     def subscribe(self, channel):
         subscribeobject = json.loads('{}')
@@ -136,7 +137,7 @@ class socket(Emitter.emitter):
             # print ("got ping sending pong")
             self.ws.send("#2")
         else:
-            logging.info(message)
+            #logging.info(message)
             mainobject = json.loads(message, object_hook=self.BlankDict)
             dataobject = mainobject["data"]
             rid = mainobject["rid"]
@@ -153,22 +154,22 @@ class socket(Emitter.emitter):
                 self.subscribechannels()
             elif result == 2:
                 self.execute(dataobject["channel"], dataobject["data"])
-                logging.info("publish got called")
+                #logging.info("publish got called")
             elif result == 3:
                 self.authToken = None
-                logging.info("remove token got called")
+                #logging.info("remove token got called")
             elif result == 4:
-                logging.info("set token got called")
+                #logging.info("set token got called")
                 if self.onSetAuthentication is not None:
                     self.onSetAuthentication(self, dataobject["token"])
             elif result == 5:
-                logging.info("Event got called")
+                #logging.info("Event got called")
                 if self.haseventack(event):
                     self.executeack(event, dataobject, self.Ack(cid))
                 else:
                     self.execute(event, dataobject)
             else:
-                logging.info("Ack receive got called")
+                #logging.info("Ack receive got called")
                 if rid in self.acks:
                     tuple = self.acks[rid]
                     if tuple is not None:
@@ -248,7 +249,6 @@ class socket(Emitter.emitter):
         self.onConnectError = onConnectError
 
     def reconnect(self):
-        # print "Hello"
         Timer(self.delay, self.connect).start()
 
     def setdelay(self, delay):
