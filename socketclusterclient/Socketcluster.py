@@ -9,7 +9,6 @@ Parser = importlib.import_module(".Parser", package="socketclusterclient")
 
 #logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
-
 class socket(Emitter.emitter):
     def emitack(self, event, object, ack):
         emitobject = json.loads('{}')
