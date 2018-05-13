@@ -25,7 +25,7 @@ class emitter(object):
         if key in self.mapack:
             function = self.mapack[key]
             if function is not None:
-                function(key, object,ack)
+                function(key, object, ack)
 
     def __init__(self):
         self.map = {}
