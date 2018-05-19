@@ -134,10 +134,10 @@ class socket(Emitter.emitter):
             event = mainobject["event"]
             result = Parser.parse(dataobject, rid, cid, event)
             if result == 1:
+                self.subscribechannels()
                 if self.OnAuthentication is not None:
                     self.id = dataobject["id"]
                     self.OnAuthentication(self, dataobject["isAuthenticated"])
-                self.subscribechannels()
             elif result == 2:
                 self.execute(dataobject["channel"], dataobject["data"])
                 sclogger.debug("publish event received for channel :: " + dataobject["channel"])
