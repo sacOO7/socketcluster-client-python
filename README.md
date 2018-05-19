@@ -90,7 +90,7 @@ Different functions are given as an argument to register listeners
 - By default logging of messages in disabled (since latest release), to enable it
 
 ```python
-   socket.enablelogging()
+   socket.enablelogger(True)
 ```
 
 Emitting and listening to events
