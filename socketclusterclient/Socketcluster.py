@@ -7,16 +7,18 @@ import importlib
 Emitter = importlib.import_module(".Emitter", package="socketclusterclient")
 Parser = importlib.import_module(".Parser", package="socketclusterclient")
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 sclogger = logging.getLogger(__name__)
 sclogger.setLevel(logging.WARNING)
 
 class socket(Emitter.emitter):
-    def enablelogging(self):
-        sclogger.setLevel(logging.NOTSET)
+    def enablelogger(self, enabled):
+        if (enabled):
+            sclogger.setLevel(logging.NOTSET)
+        else:
+            sclogger.setLevel(logging.WARNING)
 
-    def disablelogging(self):
-        sclogger.setLevel(logging.WARNING)
+    def getlogger(self):
+        return sclogger
 
     def emitack(self, event, object, ack):
         emitobject = json.loads('{}')
@@ -87,7 +89,6 @@ class socket(Emitter.emitter):
         self.ws.send(json.dumps(publishobject, sort_keys=True))
 
     def publishack(self, channel, data, ack):
-
         publishobject = json.loads('{}')
         publishobject["event"] = "#publish"
         object = json.loads('{}')
@@ -102,7 +103,6 @@ class socket(Emitter.emitter):
         return self.channels
 
     def subscribechannels(self):
-        # subscribing to all channels
         for x in self.channels:
             self.sub(x)
 
@@ -132,7 +132,6 @@ class socket(Emitter.emitter):
             rid = mainobject["rid"]
             cid = mainobject["cid"]
             event = mainobject["event"]
-
             result = Parser.parse(dataobject, rid, cid, event)
             if result == 1:
                 if self.OnAuthentication is not None:
@@ -214,7 +213,6 @@ class socket(Emitter.emitter):
         Emitter.emitter.__init__(self)
 
     def connect(self, sslopt=None, http_proxy_host=None, http_proxy_port=None):
-        # websocket.enableTrace(True)
         self.ws = websocket.WebSocketApp(self.url,
                                          on_message=self.on_message,
                                          on_error=self.on_error,
@@ -226,6 +224,7 @@ class socket(Emitter.emitter):
         self.onConnected = onConnected
         self.onDisconnected = onDisconnected
         self.onConnectError = onConnectError
+
 
     def reconnect(self):
         Timer(self.delay, self.connect).start()
