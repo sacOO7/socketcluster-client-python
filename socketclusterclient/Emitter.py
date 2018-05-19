@@ -16,10 +16,7 @@ class emitter(object):
                 function(key, object)
 
     def haseventack(self, key):
-        # print "return value is "+self.mapack[key]
-        # return self.mapack.has_key(key)
         return key in self.mapack
-        # return False
 
     def executeack(self, key, object, ack):
         if key in self.mapack:
@@ -31,4 +28,3 @@ class emitter(object):
         self.map = {}
         self.mapack = {}
 
-        # print "super init got called"
