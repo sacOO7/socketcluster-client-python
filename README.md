@@ -77,18 +77,20 @@ Different functions are given as an argument to register listeners
     socket.connect();
 ```
 
-- By default reconnection to server is enabled , to configure delay for connection
+
+- By default reconnection to server is disabled (since latest release) , to enable it and configure delay for connection
 
 ```python
     //This will set automatic-reconnection to server with delay of 2 seconds and repeating it for infinitely
-    socket.setdelay(2)
-    socket.connect();
+   socket.setdelay(2)
+   socket.setreconnection(True)
+   socket.connect();
 ```
 
-- To disable reconnection :
+- By default logging of messages in disabled (since latest release), to enable it
 
 ```python
-   socket.setreconnection(False)
+   socket.enablelogging()
 ```
 
 Emitting and listening to events

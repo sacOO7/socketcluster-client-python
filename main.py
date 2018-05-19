@@ -1,10 +1,7 @@
-import ssl
-
 from socketclusterclient import Socketcluster
 import logging
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-
 
 def onconnect(socket):
     logging.info("on connect got called")
@@ -25,7 +22,6 @@ def onSetAuthentication(socket, token):
 
 def onAuthentication(socket, isauthenticated):
     logging.info("Authenticated is " + str(isauthenticated))
-    print "id is "+socket.id
     # socket.emit("chat", "Hello")
     socket.subscribeack('yell', suback)
     socket.publishack('yell', 'Hi dudies', puback)
@@ -59,6 +55,7 @@ if __name__ == "__main__":
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
     socket.onack('ping', messsageack)
+    # socket.enablelogging()
     # socket.on('yell', message)
     # socket.setreconnection(True)
     socket.connect()
