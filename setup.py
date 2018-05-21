@@ -1,21 +1,25 @@
 from distutils.core import setup
+import os.path
 
 
 def readme():
-    with open('README.md') as f:
-        return f.read()
+    if os.path.exists('README.md'):
+        with open('README.md') as f:
+            return f.read()
+    else:
+        return "Python client for socket-cluster framework in node.js"
 
 setup(
     name='socketclusterclient',
     packages=['socketclusterclient'],  # this must be the same as the name above
-    version='1.3.1',
+    version='1.3.2',
     description='Client library for socketcluster framework in nodejs',
     long_description=readme(),
     author='Sachin Shinde',
     author_email='sachinshinde7676@gmail.com',
     license='MIT',
     url='https://github.com/sacOO7/socketcluster-client-python',  # use the URL to the github repo
-    download_url='https://github.com/sacOO7/socketcluster-client-python/tarball/v1.3.1',
+    download_url='https://github.com/sacOO7/socketcluster-client-python/tarball/v1.3.2',
     keywords=['websocket', 'socketcluster', 'nodejs', 'client', 'socketclusterclient'],  # arbitrary keywords
     install_requires=[
         'websocket-client',
