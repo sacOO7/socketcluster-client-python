@@ -232,3 +232,9 @@ Support websocket access via http proxy. The proxy server must allow "CONNECT" m
         socket = Socketcluster.socket("wss://localhost:8000/socketcluster/")
         socket.connect(http_proxy_host="proxy_host_name", http_proxy_port=3128)
 ```
+
+- To have custom settings over internal logger, you can get logger instance and apply necessary settings over it.
+```python
+        sclogger = socket.getlogger()
+```
+Please follow logging tutorial over here : https://docs.python.org/3/howto/logging-cookbook.html

@@ -185,9 +185,6 @@ class socket(Emitter.emitter):
     def on_open(self, ws):
         self.resetvalue()
 
-        if self.onConnected is not None:
-            self.onConnected(self)
-
         handshakeobject = json.loads('{}')
         handshakeobject["event"] = "#handshake"
         object = json.loads('{}')
@@ -195,6 +192,9 @@ class socket(Emitter.emitter):
         handshakeobject["data"] = object
         handshakeobject["cid"] = self.getandincrement()
         self.ws.send(json.dumps(handshakeobject, sort_keys=True))
+
+        if self.onConnected is not None:
+            self.onConnected(self)
 
 
     def setAuthtoken(self, token):
