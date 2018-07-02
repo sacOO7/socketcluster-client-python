@@ -10,6 +10,7 @@ Parser = importlib.import_module(".Parser", package="socketclusterclient")
 sclogger = logging.getLogger(__name__)
 sclogger.setLevel(logging.WARNING)
 
+
 class socket(Emitter.emitter):
     def enablelogger(self, enabled):
         if (enabled):
@@ -196,9 +197,11 @@ class socket(Emitter.emitter):
         if self.onConnected is not None:
             self.onConnected(self)
 
-
     def setAuthtoken(self, token):
         self.authToken = str(token)
+
+    def getAuthtoken(self):
+        return self.authToken
 
     def __init__(self, url):
         self.id = ""
@@ -224,7 +227,6 @@ class socket(Emitter.emitter):
         self.onConnected = onConnected
         self.onDisconnected = onDisconnected
         self.onConnectError = onConnectError
-
 
     def reconnect(self):
         Timer(self.delay, self.connect).start()
