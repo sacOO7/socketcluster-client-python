@@ -8,6 +8,7 @@ Emitter = importlib.import_module(".Emitter", package="socketclusterclient")
 Parser = importlib.import_module(".Parser", package="socketclusterclient")
 
 sclogger = logging.getLogger(__name__)
+sclogger.addHandler(logging.StreamHandler())
 sclogger.setLevel(logging.WARNING)
 
 
