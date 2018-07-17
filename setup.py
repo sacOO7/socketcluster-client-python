@@ -12,14 +12,14 @@ def readme():
 setup(
     name='socketclusterclient',
     packages=['socketclusterclient'],  # this must be the same as the name above
-    version='1.3.2',
+    version='1.3.3',
     description='Client library for socketcluster framework in nodejs',
     long_description=readme(),
     author='Sachin Shinde',
     author_email='sachinshinde7676@gmail.com',
     license='MIT',
     url='https://github.com/sacOO7/socketcluster-client-python',  # use the URL to the github repo
-    download_url='https://github.com/sacOO7/socketcluster-client-python/tarball/v1.3.2',
+    download_url='https://github.com/sacOO7/socketcluster-client-python/tarball/v1.3.3',
     keywords=['websocket', 'socketcluster', 'nodejs', 'client', 'socketclusterclient'],  # arbitrary keywords
     install_requires=[
         'websocket-client',
