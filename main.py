@@ -1,10 +1,11 @@
 from socketclusterclient import Socketcluster
 import logging
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+mylogger = logging.getLogger(__name__)
+mylogger.setLevel(logging.DEBUG)
 
 def onconnect(socket):
-    logging.info("on connect got called")
+    mylogger.debug("on connect got called")
 
 
 def ondisconnect(socket):
@@ -55,7 +56,7 @@ if __name__ == "__main__":
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
     socket.onack('ping', messsageack)
-    socket.enablelogger(True)
+    socket.enablelogger(False)
     # socket.on('yell', message)
     # socket.setreconnection(True)
     socket.connect()

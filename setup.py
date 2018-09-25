@@ -34,7 +34,7 @@ setup(
 # python setup.py sdist upload -r pypi
 # python3 -m twine upload dist/
 
-# git tag -a v0.2 -m "My more optimized version of socketcluster client"
+# git tag -a v1.3.3 -m "Fixed console logging issue"
 # git push --tags origin
 
 # https://upload.pypi.org/legacy/
