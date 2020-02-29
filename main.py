@@ -56,7 +56,7 @@ if __name__ == "__main__":
     socket.setBasicListener(onconnect, ondisconnect, onConnectError)
     socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
     socket.onack('ping', messsageack)
-    socket.enablelogger(False)
+    socket.enablelogger(True)
     # socket.on('yell', message)
     # socket.setreconnection(True)
     socket.connect()

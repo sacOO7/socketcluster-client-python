@@ -15,7 +15,7 @@ sclogger.setLevel(logging.WARNING)
 class socket(Emitter.emitter):
     def enablelogger(self, enabled):
         if (enabled):
-            sclogger.setLevel(logging.NOTSET)
+            sclogger.setLevel(logging.DEBUG)
         else:
             sclogger.setLevel(logging.WARNING)
 
@@ -125,8 +125,9 @@ class socket(Emitter.emitter):
             return ''
 
     def on_message(self, ws, message):
-        if message == "#1":
-            self.ws.send("#2")
+        if message == "":
+            self.ws.send("")
+            sclogger.debug("received ping, sending pong back")
         else:
             sclogger.debug(message)
             mainobject = json.loads(message, object_hook=self.BlankDict)
