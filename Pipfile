@@ -4,6 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pylint="*"
+pytest-html="*"
+pytest-bdd="*"
+jsonschema="*"
 
 [packages]
 socketclusterclient = {editable = true,path = "."}
