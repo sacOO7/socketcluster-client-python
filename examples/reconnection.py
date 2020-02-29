@@ -1,34 +1,33 @@
 import logging
-#logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
-from socketclusterclient import Socketcluster
+from socketclusterclient import socketcluster
 
 
-def onconnect(socket):
+def on_connect(_socket):
     logging.info("on connect got called")
 
 
-def ondisconnect(socket):
+def on_disconnect(_socket):
     logging.info("on disconnect got called")
 
 
-def onConnectError(socket, error):
+def on_connect_error(_socket, error):
     logging.error("On connect error got called")
 
 
-def onSetAuthentication(socket, token):
+def on_set_authentication(socket, token):
     logging.info("Token received " + token)
-    socket.setAuthtoken(token)
+    socket.set_auth_token(token)
 
 
-def onAuthentication(socket, isauthenticated):
-    logging.info("Authenticated is " + str(isauthenticated))
+def on_authentication(_socket, is_authenticated):
+    logging.info("Authenticated is " + str(is_authenticated))
 
 
 if __name__ == "__main__":
-    socket = Socketcluster.socket("ws://localhost:8000/socketcluster/")
-    socket.setBasicListener(onconnect, ondisconnect, onConnectError)
-    socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
-    # socket.setreconnection(False)
-    socket.setdelay(2)
+    socket = socketcluster.Socket("ws://localhost:8000/socketcluster/")
+    socket.set_basic_listener(on_connect, on_disconnect, on_connect_error)
+    socket.set_authentication_listener(on_set_authentication, on_authentication)
+    # socket.set_reconnection(False)
+    socket.set_delay(2)
     socket.connect()

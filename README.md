@@ -34,37 +34,37 @@ Create instance of `Socket` class by passing url of socketcluster-server end-poi
 Different functions are given as an argument to register listeners
 
 ```python
-        from socketclusterclient import Socketcluster
+        from socketclusterclient import socketcluster
         import logging
         
-        logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+        logging.basicConfig(format='%(levelname)s:%(msg)s', level=logging.DEBUG)
         
         
-        def onconnect(socket):
+        def on_connect(socket):
             logging.info("on connect got called")
         
         
-        def ondisconnect(socket):
+        def on_disconnect(socket):
             logging.info("on disconnect got called")
         
         
-        def onConnectError(socket, error):
+        def on_connect_error(socket, error):
             logging.info("On connect error got called")
         
         
-        def onSetAuthentication(socket, token):
+        def on_set_authentication(socket, token):
             logging.info("Token received " + token)
-            socket.setAuthtoken(token)
+            socket.set_auth_token(token)
         
         
-        def onAuthentication(socket, isauthenticated):
+        def on_authentication(socket, isauthenticated):
             logging.info("Authenticated is " + str(isauthenticated))
             
             
         if __name__ == "__main__":
-            socket = Socketcluster.socket("ws://localhost:8000/socketcluster/")
-            socket.setBasicListener(onconnect, ondisconnect, onConnectError)
-            socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
+            socket = socketcluster.socket("ws://localhost:8000/socketcluster/")
+            socket.set_basic_listener(on_connect, on_disconnect, on_connect_error)
+            socket.set_authentication_listener(on_set_authentication, on_authentication)
             socket.connect()
 ```
 
@@ -82,26 +82,26 @@ Different functions are given as an argument to register listeners
 
 ```python
     //This will set automatic-reconnection to server with delay of 2 seconds and repeating it for infinitely
-   socket.setdelay(2)
-   socket.setreconnection(True)
+   socket.set_delay(2)
+   socket.set_reconnection(True)
    socket.connect();
 ```
 
 - By default logging of messages in disabled (since latest release), to enable it
 
 ```python
-   socket.enablelogger(True)
+   socket.enable_logger(True)
 ```
 
 Emitting and listening to events
 --------------------------------
 #### Event emitter
 
-- eventname is name of event and message can be String, boolean, int or JSON-object
+- eventname is name of event and msg can be String, boolean, int or JSON-object
 
 ```python
 
-    socket.emit(eventname,message);
+    socket.emit(eventname,msg);
         
     # socket.emit("chat", "Hi")
 ```
@@ -110,7 +110,7 @@ Emitting and listening to events
 
 ```python
 
-    socket.emitack("chat", "Hi", ack)  
+    socket.emit_ack("chat", "Hi", ack)  
         
     def ack(eventname, error, object):
         print "Got ack data " + object + " and error " + error + " and eventname is " + eventname
@@ -124,9 +124,9 @@ The object received can be String, Boolean, Long or JSONObject.
 
 ```python
      # Receiver code without sending acknowledgement back
-     socket.on("ping", message)
+     socket.on("ping", msg)
      
-     def message(eventname, object):
+     def msg(eventname, object):
          print "Got data " + object + " from eventname " + eventname
 ```
 
@@ -134,9 +134,9 @@ The object received can be String, Boolean, Long or JSONObject.
 
 ```python
     # Receiver code with ack
-    socket.onack("ping", messsageack)
+    socket.on_ack("ping", msg_ack)
     
-    def messsageack(eventname, object, ackmessage):
+    def msg_ack(eventname, object, ackmessage):
         print "Got data " + object + " from eventname " + eventname
         ackmessage("this is error", "this is data")
         
@@ -155,9 +155,9 @@ Implementing Pub-Sub via channels
     socket.subscribe('yell')
     
     #with acknowledgement
-    socket.subscribeack('yell', suback)
+    socket.subscribe_ack('yell', sub_ack)
     
-    def suback(channel, error, object):
+    def sub_ack(channel, error, object):
         if error is '':
             print "Subscribed successfully to channel " + channel
 ```
@@ -183,9 +183,9 @@ Implementing Pub-Sub via channels
        socket.publish('yell', 'Hi dudies')
        
        #with acknowledgement
-       socket.publishack('yell', 'Hi dudies', puback)
+       socket.publish_ack('yell', 'Hi dudies', pub_ack)
        
-       def puback(channel, error, object):
+       def pub_ack(channel, error, object):
            if error is '':
                print "Publish sent successfully to channel " + channel
 ``` 
@@ -196,9 +196,9 @@ Implementing Pub-Sub via channels
 
 ```python
         
-        socket.onchannel('yell', channelmessage)
+        socket.on_channel('yell', channel_message)
     
-        def channelmessage(key, object):
+        def channel_message(key, object):
             print "Got data " + object + " from key " + key
     
 ``` 
@@ -210,9 +210,9 @@ Implementing Pub-Sub via channels
          socket.unsubscribe('yell')
          
          # with acknowledgement
-         socket.unsubscribeack('yell', unsuback) 
+         socket.unsubscribe_ack('yell', unsub_ack) 
          
-         def unsuback(channel, error, object):
+         def unsub_ack(channel, error, object):
               if error is '':
                    print "Unsubscribed to channel " + channel 
 ```
@@ -235,6 +235,6 @@ Support websocket access via http proxy. The proxy server must allow "CONNECT" m
 
 - To have custom settings over internal logger, you can get logger instance and apply necessary settings over it.
 ```python
-        sclogger = socket.getlogger()
+        sclogger = socket.get_logger()
 ```
 Please follow logging tutorial over here : https://docs.python.org/3/howto/logging-cookbook.html

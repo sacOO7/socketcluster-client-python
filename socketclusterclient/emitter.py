@@ -1,12 +1,12 @@
-class emitter(object):
+class Emitter(object):
     def on(self, key, function):
         self.map[key] = function
 
-    def onchannel(self, key, function):
+    def on_channel(self, key, function):
         self.map[key] = function
 
-    def onack(self, key, function):
-        self.mapack[key] = function
+    def on_ack(self, key, function):
+        self.map_ack[key] = function
 
     def execute(self, key, object):
 
@@ -15,16 +15,16 @@ class emitter(object):
             if function is not None:
                 function(key, object)
 
-    def haseventack(self, key):
-        return key in self.mapack
+    def has_event_ack(self, key):
+        return key in self.map_ack
 
-    def executeack(self, key, object, ack):
-        if key in self.mapack:
-            function = self.mapack[key]
+    def execute_ack(self, key, object, ack):
+        if key in self.map_ack:
+            function = self.map_ack[key]
             if function is not None:
                 function(key, object, ack)
 
     def __init__(self):
         self.map = {}
-        self.mapack = {}
+        self.map_ack = {}
 

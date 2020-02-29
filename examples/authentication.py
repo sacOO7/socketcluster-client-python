@@ -1,29 +1,30 @@
-from socketclusterclient import Socketcluster
+from socketclusterclient import socketcluster
 
 
-def onconnect(socket):
+def on_connect(_socket):
     print "on connect got called"
 
 
-def ondisconnect(socket):
+def on_disconnect(_socket):
     print "on disconnect got called"
 
 
-def onConnectError(socket, error):
+def on_connect_error(_socket, error):
     print "On connect error got called"
 
 
-def onSetAuthentication(socket, token):
+def on_set_authentication(socket, token):
     print "Token received " + token
-    socket.setAuthtoken(token)
+    socket.set_auth_token(token)
 
 
-def onAuthentication(socket, isauthenticated):
-    print "Authenticated is " + str(isauthenticated)
+def on_authentication(socket, is_authenticated):
+    print "Authenticated is " + str(is_authenticated)
     socket.disconnect()
 
+
 if __name__ == "__main__":
-    socket = Socketcluster.socket("ws://localhost:8000/socketcluster/")
-    socket.setBasicListener(onconnect, ondisconnect, onConnectError)
-    socket.setAuthenticationListener(onSetAuthentication, onAuthentication)
+    socket = socketcluster.Socket("ws://localhost:8000/socketcluster/")
+    socket.set_basic_listener(on_connect, on_disconnect, on_connect_error)
+    socket.set_authentication_listener(on_set_authentication, on_authentication)
     socket.connect()

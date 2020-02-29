@@ -42,3 +42,4 @@ tmtagsHistory
 dist
 build
 socketclusterclient.egg-info
+SCTestServer/sc-testserver

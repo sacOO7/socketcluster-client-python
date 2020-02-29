@@ -6,7 +6,7 @@
 # ACKRECEIVE,6
 
 
-def parse(dataobject, rid, cid, event):
+def parse(rid, event):
     if event is not '':
         if event == "#publish":
             return 2
