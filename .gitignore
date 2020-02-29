@@ -39,3 +39,6 @@ tmtagsHistory
 *.sublime-project
 *.sublime-workspace
 .bundle
+dist
+build
+socketclusterclient.egg-info
